@@ -1,0 +1,23 @@
+# File di configurazione locale
+.env
+
+# Directory degli output di valutazione
+/runs/
+
+# Dipendenze e cache di Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# File specifici dell'IDE
+.vscode/
+.idea/
+
+# File di documentazione interna da non pubblicare
+implementation-plan.md
+
+# Dati e dataset da non pubblicare
+/eval/datasets/
+

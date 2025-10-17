@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Evaluation Report: {{ suite_name }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; color: #333; }
+        h1, h2 { color: #1a1a1a; }
+        table { border-collapse: collapse; width: 60%; margin-top: 1em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .run-info { background-color: #eef; padding: 1em; border-radius: 5px; }
+        .metric { font-weight: bold; }
+        .score { font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>RAG Evaluation Report</h1>
+    
+    <div class="run-info">
+        <p><strong>Suite Name:</strong> {{ suite_name }}</p>
+        <p><strong>Run ID:</strong> {{ run_id }}</p>
+        <p><strong>Timestamp:</strong> {{ timestamp }}</p>
+    </div>
+
+    <h2>Scorecard (Aggregated Results)</h2>
+    {% if aggregated_results %}
+        {{ aggregated_results|safe }}
+    {% else %}
+        <p>No aggregated results were generated.</p>
+    {% endif %}
+
+    <h2>Dettaglio Conversazioni</h2>
+    {% if detailed_conversation_results %}
+        {% for result in detailed_conversation_results %}
+            <div class="conversation-details">
+                <h4>Conversazione ID: {{ result.metrics.conversation_id }}</h4>
+                <div class="chat-box">
+                    {% for turn in result.conversation.turns %}
+                        <div class="turn turn-{{ turn.role }}">
+                            <strong>{{ turn.role }}:</strong> {{ turn.content }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <table class="details-table">
+                     <tr>
+                        <th>Metrica Conversazionale</th>
+                        <th>Punteggio</th>
+                        <th>Motivazione</th>
+                    </tr>
+                    {% for metric, value in result.metrics.items() %}
+                        {% if metric != 'conversation_id' and value is mapping %}
+                        <tr>
+                            <td class="metric">{{ metric }}</td>
+                            <td class="score">{{ "%.4f"|format(value.score) }}</td>
+                            <td>{{ value.explanation }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nessuna conversazione trovata in questo run.</p>
+    {% endif %}
+
+    <h2>Dettaglio Query Singole</h2>
+    {% if detailed_query_results %}
+        {% for result in detailed_query_results %}
+            <div class="query-details">
+                <h4>Query ID: {{ result.metrics.query_id }}</h4>
+                <p><strong>Domanda:</strong> {{ result.query.domanda }}</p>
+                <p><strong>Risposta:</strong> {{ result.rag_output.answer }}</p>
+                
+                <table class="details-table">
+                    <tr>
+                        <th>Metrica</th>
+                        <th>Punteggio</th>
+                        <th>Motivazione (se disponibile)</th>
+                    </tr>
+                    {% for metric, value in result.metrics.items() %}
+                        {% if metric != 'query_id' %}
+                        <tr>
+                            <td class="metric">{{ metric }}</td>
+                            {% if value is mapping %}
+                                <td class="score">{{ "%.4f"|format(value.score) }}</td>
+                                <td>{{ value.reason }}</td>
+                            {% else %}
+                                <td class="score">{{ "%.4f"|format(value) if value is number else value }}</td>
+                                <td>-</td>
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nessun risultato dettagliato trovato.</p>
+    {% endif %}
+
+</body>
+</html>
+<style>
+        body { font-family: sans-serif; margin: 2em; color: #333; }
+        h1, h2 { color: #1a1a1a; }
+        table { border-collapse: collapse; width: 60%; margin-top: 1em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .run-info { background-color: #eef; padding: 1em; border-radius: 5px; }
+        .metric { font-weight: bold; }
+        .score { font-family: monospace; }
+.query-details {
+    border: 1px solid #ccc;
+    padding: 1.5em;
+    margin-top: 2em;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+.conversation-details {
+    border: 1px solid #a2c4a3;
+    padding: 1.5em;
+    margin-top: 2em;
+    border-radius: 8px;
+    background-color: #f0f5f0;
+}
+.chat-box {
+    border: 1px solid #ccc;
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.turn {
+    margin-bottom: 0.5em;
+}
+.turn-user {
+    color: #0056b3;
+}
+.turn-assistant {
+    color: #333;
+    padding-left: 20px;
+}
+.details-table {
+    width: 100%;
+    margin-top: 1em;
+}
+.details-table th, .details-table td {
+    border: 1px solid #e0e0e0;
+}
+</style>
+

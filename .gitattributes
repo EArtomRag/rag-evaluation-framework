@@ -1,0 +1,18 @@
+# Imposta il comportamento predefinito per tutti i file di testo.
+# Git tenterà di rilevare se un file è di testo e, in tal caso,
+# normalizzerà le terminazioni di riga in LF nel repository.
+* text=auto eol=lf
+
+# Specifica esplicitamente i tipi di file che devono sempre avere LF
+*.py text
+*.md text
+*.json text
+*.jsonl text
+*.toml text
+*.j2 text
+*.gitignore text
+*.gitattributes text
+
+# Specifica i tipi di file che non devono essere normalizzati (binari)
+# Aggiungi qui eventuali estensioni di file binari se ne avrai bisogno
+# Esempio: *.png binary

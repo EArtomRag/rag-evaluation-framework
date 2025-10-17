@@ -1,0 +1,21 @@
+{
+  "name": "base_suite",
+  "dataset_path": "eval/datasets/v1/queries.jsonl",
+  "rag_params": {
+    "k": 10,
+    "filters": {},
+    "model": "gpt-4-turbo"
+  },
+  "metrics": [
+    "recall@10",
+    "mrr",
+    "ndcg@10",
+    "faithfulness",
+    "answer_relevancy"
+  ],
+  "judge": {
+    "model": "gpt-4o",
+    "use_llm_as_judge": true
+  }
+}
+

@@ -1,0 +1,17 @@
+{
+  "name": "Multi-Turn Conversation Evaluation Suite (Live)",
+  "dataset_path": "eval/datasets/v3/multi_turn_queries.jsonl",
+  "adapter": {
+    "type": "http",
+    "url": "https://biblio-rag-app.fly.dev/"
+  },
+  "rag_params": {
+    "k": 5,
+    "model": "gpt-4-turbo"
+  },
+  "metrics": [
+    "turn_faithfulness",
+    "turn_answer_relevancy",
+    "turn_answer_correctness"
+  ]
+}

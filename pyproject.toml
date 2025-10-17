@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "rag-evaluation-runner"
+version = "0.1.0"
+description = "A runner to evaluate RAG systems, as per product requirements."
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.7.4"
+typer = "^0.12.3"
+deepeval = "^0.21.43"
+pytrec-eval = "^0.5"
+pandas = "^2.2.2"
+numpy = "^1.26.4"
+jinja2 = "^3.1.4"
+requests = "^2.32.3"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

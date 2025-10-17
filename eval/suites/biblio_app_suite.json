@@ -1,0 +1,25 @@
+{
+  "name": "biblio_rag_app_full_evaluation",
+  "dataset_path": "eval/datasets/v2/biblio_queries.jsonl",
+  "adapter": {
+    "type": "http",
+    "url": "https://biblio-rag-app.fly.dev/"
+  },
+  "rag_params": {
+    "k": 10,
+    "filters": {},
+    "model": "gpt-4o"
+  },
+  "metrics": [
+    "recall@5",
+    "recall@10",
+    "mrr",
+    "ndcg@10",
+    "faithfulness",
+    "answer_relevancy",
+    "contextual_recall",
+    "contextual_precision",
+    "cost",
+    "latency"
+  ]
+}
