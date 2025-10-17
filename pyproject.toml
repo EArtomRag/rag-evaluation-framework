@@ -5,6 +5,9 @@ description = "A runner to evaluate RAG systems, as per product requirements."
 authors = ["Your Name <you@example.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "eval", from = "." }
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
