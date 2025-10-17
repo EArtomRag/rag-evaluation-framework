@@ -63,7 +63,7 @@ def test_load_dataset_invalid_json(tmp_path: Path):
     # Arrange
     file_path = tmp_path / "invalid.jsonl"
     with open(file_path, "w", encoding="utf-8") as f:
-        f.write('{"id": "Q-0001", "domanda": "valid"}\n')
+        f.write('{"id": "Q-0001", "domanda": "valid", "tipo_domanda": "puntuale"}\n')
         f.write("{this is not json}\n")
 
     # Act & Assert
