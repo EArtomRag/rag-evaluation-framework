@@ -8,9 +8,11 @@ from pydantic import BaseModel, Field
 
 class QuestionType(str, Enum):
     """Enumeration for the type of question."""
-    PUNTUALE = "puntuale"
-    CONTESTUALE = "contestuale"
-    INFERENZIALE = "inferenziale"
+    SYNTHESIS = "synthesis"
+    FACTUAL = "factual"
+    COMPARISON = "comparison"
+    OUT_OF_SCOPE = "out_of_scope"
+    SQL = "sql"
     MULTI_TURN = "multi-turn"
 
 
