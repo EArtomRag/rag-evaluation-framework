@@ -17,44 +17,57 @@ Questo progetto fornisce una CLI (Command Line Interface) in Python per la valut
 
 I comandi vanno eseguiti dalla root del progetto in un terminale PowerShell.
 
-### a. Installazione delle Dipendenze
+### a. Prerequisiti
 
-Questo progetto usa Poetry. Per installare tutte le librerie necessarie, esegui:
+- Python 3.11+
+- [uv](https://github.com/astral-sh/uv): Un installer Python estremamente veloce. Per installarlo (una tantum):
+  ```powershell
+  pip install uv
+  ```
 
-```powershell
-py -m poetry install
-```
+### b. Creazione dell'Ambiente e Installazione delle Dipendenze
 
-Se il comando `py` non è disponibile, puoi usare il percorso completo a Python: `python -m poetry install`.
+1.  **Crea l'ambiente virtuale:**
+    ```powershell
+    uv venv
+    ```
+2.  **Installa le dipendenze del progetto:**
+    ```powershell
+    uv pip install -e .
+    ```
 
-### b. Configurazione della Chiave API di OpenAI
+### c. Configurazione della Chiave API di OpenAI
 
-Le metriche basate su `deepeval` richiedono una chiave API di OpenAI per funzionare. Impostala come variabile d'ambiente.
+Le metriche basate su `deepeval` richiedono una chiave API di OpenAI per funzionare. Il modo più semplice è creare un file `.env` nella root del progetto.
 
-```powershell
-$env:OPENAI_API_KEY="sk-..."
-```
-
-**Nota:** Questa variabile deve essere impostata in ogni nuova sessione del terminale.
+1.  Crea un file chiamato `.env`.
+2.  Aggiungi la seguente riga al file, sostituendo `sk-...` con la tua chiave:
+    ```
+    OPENAI_API_KEY="sk-..."
+    ```
+Lo script caricherà automaticamente questa variabile all'avvio.
 
 ## 2. Guida all'Uso
 
-Tutti i comandi vengono eseguiti tramite l'interprete Python dell'ambiente virtuale (`.\.venv\Scripts\python.exe`).
+Prima di eseguire i comandi, **attiva l'ambiente virtuale** in una nuova sessione del terminale:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+Vedrai `(.venv)` apparire all'inizio del prompt, a conferma che l'ambiente è attivo.
 
 ### a. Eseguire una Valutazione
 
 Il comando principale è `run`. Il tipo di valutazione (single o multi-turn) dipende dal contenuto del dataset specificato nella suite.
 
 **Eseguire una Valutazione Single-Turn:**
-
 ```powershell
-.\.venv\Scripts\python.exe -m eval.run run --suite eval/suites/biblio_app_suite.json
+python -m eval.run run --suite eval/suites/biblio_app_suite.json
 ```
 
 **Eseguire una Valutazione Multi-Turn:**
-
 ```powershell
-.\.venv\Scripts\python.exe -m eval.run run --suite eval/suites/multi_turn_suite.json
+python -m eval.run run --suite eval/suites/multi_turn_suite.json
 ```
 
 Al termine, una nuova directory verrà creata in `runs/` con tutti i risultati. Apri il file `report.html` per un'analisi visuale.
@@ -64,7 +77,7 @@ Al termine, una nuova directory verrà creata in `runs/` con tutti i risultati. 
 Dopo aver eseguito almeno due valutazioni, puoi confrontarle con il comando `compare`.
 
 ```powershell
-.\.venv\Scripts\python.exe -m eval.run compare runs/NOME_DELLA_RUN_BASELINE runs/NOME_DELLA_RUN_NUOVA
+python -m eval.run compare runs/NOME_DELLA_RUN_BASELINE runs/NOME_DELLA_RUN_NUOVA
 ```
 
 ### c. Usare il Workflow Human-in-the-Loop (HITL)
@@ -73,11 +86,9 @@ Questo workflow si applica ai risultati delle esecuzioni **single-turn**.
 
 **Passo 1: Esporta un Campione per la Revisione**
 Crea un file CSV da un'esecuzione esistente, campionando (es. il 20%) dei risultati.
-
 ```powershell
-.\.venv\Scripts\python.exe -m eval.run export-for-review runs/NOME_DELLA_TUA_RUN --sample 0.2
+python -m eval.run export-for-review runs/NOME_DELLA_TUA_RUN --sample 0.2
 ```
-
 Questo creerà un file `review_sample.csv` nella directory della run.
 
 **Passo 2: Compila il CSV**
@@ -85,9 +96,8 @@ Apri il file e compila le colonne `..._umano` con i tuoi punteggi e aggiungi not
 
 **Passo 3: Analizza i Risultati**
 Lancia l'analisi sul file CSV compilato per confrontare i tuoi giudizi con quelli dell'LLM.
-
 ```powershell
-.\.venv\Scripts\python.exe -m eval.run analyze-review runs/NOME_DELLA_TUA_RUN/review_sample.csv
+python -m eval.run analyze-review runs/NOME_DELLA_TUA_RUN/review_sample.csv
 ```
 
 ---
