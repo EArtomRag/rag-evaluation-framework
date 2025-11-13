@@ -66,6 +66,7 @@ def _create_single_turn_review_csv(run_dir: Path, files: list[Path]) -> Path:
             
             record = {
                 "query_id": data.get("query", {}).get("id"),
+                "tipo_domanda": data.get("query", {}).get("tipo_domanda"),
                 "domanda": data.get("query", {}).get("domanda"),
                 "risposta_generata": data.get("rag_output", {}).get("answer"),
                 "contesti": json.dumps([ctx['text'] for ctx in data.get("rag_output", {}).get("contexts", [])], ensure_ascii=False, indent=2),

@@ -42,10 +42,9 @@ Le metriche basate su `deepeval` richiedono una chiave API di OpenAI per funzion
 
 1.  Crea un file chiamato `.env`.
 2.  Aggiungi la seguente riga al file, sostituendo `sk-...` con la tua chiave:
-    ```
-    OPENAI_API_KEY="sk-..."
-    ```
-Lo script caricherà automaticamente questa variabile all'avvio.
+    `    OPENAI_API_KEY="sk-..."
+   `
+    Lo script caricherà automaticamente questa variabile all'avvio.
 
 ## 2. Guida all'Uso
 
@@ -54,6 +53,7 @@ Prima di eseguire i comandi, **attiva l'ambiente virtuale** in una nuova session
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
+
 Vedrai `(.venv)` apparire all'inizio del prompt, a conferma che l'ambiente è attivo.
 
 ### a. Eseguire una Valutazione
@@ -61,11 +61,13 @@ Vedrai `(.venv)` apparire all'inizio del prompt, a conferma che l'ambiente è at
 Il comando principale è `run`. Il tipo di valutazione (single o multi-turn) dipende dal contenuto del dataset specificato nella suite.
 
 **Eseguire una Valutazione Single-Turn:**
+
 ```powershell
 python -m eval.run run --suite eval/suites/biblio_app_suite.json
 ```
 
 **Eseguire una Valutazione Multi-Turn:**
+
 ```powershell
 python -m eval.run run --suite eval/suites/multi_turn_suite.json
 ```
@@ -86,9 +88,11 @@ Questo workflow si applica ai risultati delle esecuzioni **single-turn**.
 
 **Passo 1: Esporta un Campione per la Revisione**
 Crea un file CSV da un'esecuzione esistente, campionando (es. il 20%) dei risultati.
+
 ```powershell
 python -m eval.run export-for-review runs/NOME_DELLA_TUA_RUN --sample 0.2
 ```
+
 Questo creerà un file `review_sample.csv` nella directory della run.
 
 **Passo 2: Compila il CSV**
@@ -96,6 +100,7 @@ Apri il file e compila le colonne `..._umano` con i tuoi punteggi e aggiungi not
 
 **Passo 3: Analizza i Risultati**
 Lancia l'analisi sul file CSV compilato per confrontare i tuoi giudizi con quelli dell'LLM.
+
 ```powershell
 python -m eval.run analyze-review runs/NOME_DELLA_TUA_RUN/review_sample.csv
 ```

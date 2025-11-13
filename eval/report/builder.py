@@ -6,6 +6,42 @@ from jinja2 import Environment, FileSystemLoader
 import json
 
 
+def _create_detailed_csv_report(output_dir: Path, detailed_query_results: list):
+    """Creates a CSV file with detailed metrics for each query."""
+    if not detailed_query_results:
+        return
+
+    records = []
+    for result in detailed_query_results:
+        query_info = result.get("query", {})
+        rag_output = result.get("rag_output", {})
+        metrics = result.get("metrics", {})
+
+        record = {
+            "query_id": query_info.get("id"),
+            "tipo_domanda": query_info.get("tipo_domanda"),
+            "domanda": query_info.get("domanda"),
+            "risposta_generata": rag_output.get("answer"),
+        }
+
+        for metric_name, value in metrics.items():
+            if metric_name == 'query_id':
+                continue
+            
+            if isinstance(value, dict):
+                record[f"{metric_name}_score"] = value.get("score")
+                record[f"{metric_name}_reason"] = value.get("reason")
+            else:
+                record[metric_name] = value
+        
+        records.append(record)
+
+    df = pd.DataFrame(records)
+    output_path = output_dir / "detailed_metrics.csv"
+    df.to_csv(output_path, index=False, encoding="utf-8-sig", decimal=".")
+    print(f"Detailed metrics report saved to: {output_path}")
+
+
 def build_html_report(
     run_id: str,
     suite_name: str,
@@ -46,6 +82,9 @@ def build_html_report(
                     detailed_conversation_results.append(data)
                 else:
                     detailed_query_results.append(data)
+
+    # Create the detailed CSV report for single-turn queries
+    _create_detailed_csv_report(output_dir, detailed_query_results)
 
     # Render the template with the provided data
     html_content = template.render(

@@ -71,6 +71,7 @@
         {% for result in detailed_query_results %}
             <div class="query-details">
                 <h4>Query ID: {{ result.metrics.query_id }}</h4>
+                <p><strong>Tipo Domanda:</strong> {{ result.query.tipo_domanda }}</p>
                 <p><strong>Domanda:</strong> {{ result.query.domanda }}</p>
                 <p><strong>Risposta:</strong> {{ result.rag_output.answer }}</p>
                 
