@@ -108,3 +108,9 @@ python -m eval.run analyze-review runs/NOME_DELLA_TUA_RUN/review_sample.csv
 ---
 
 _Per una descrizione tecnica dettagliata dell'architettura e dei moduli, fare riferimento al file `project-description.md`._
+## License
+
+This repository includes:
+
+- Source code → licensed under the MIT License (see LICENSE)
+- Documentation, data, and evaluation materials → licensed under CC BY 4.0 (see LICENSE_DATA)
